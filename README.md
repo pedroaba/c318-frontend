@@ -1,17 +1,56 @@
 <h1 align="center">🎓 Sistema de Predição de Evasão Escolar</h1>
+<h3 align="center">📊 Frontend - Dashboard & Análise</h3>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/Tipo-Frontend-blueviolet?style=for-the-badge" alt="Frontend" />
   <img src="https://img.shields.io/badge/Python-3.13+-blue.svg" alt="Python" />
   <img src="https://img.shields.io/badge/Streamlit-1.51.0-red.svg" alt="Streamlit" />
   <img src="https://img.shields.io/badge/Scikit--learn-1.7.2-orange.svg" alt="Scikit-learn" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
 </p>
 
+<p align="center">
+  <strong>⚠️ Este é o repositório FRONTEND do projeto</strong><br/>
+  Interface de visualização, análise e dashboard executivo para o modelo de predição de evasão escolar
+</p>
+
 > **Dashboard executivo de inteligência de negócios para análise preditiva e prevenção de evasão escolar baseado em Machine Learning e análise SHAP.**
+
+> 🔗 **Repositório Backend**: O treinamento e desenvolvimento do modelo de ML está disponível em [tcc-course-evasion](https://github.com/ArthurBuenoSilva/tcc-course-evasion)
 
 ## 📋 Sobre o Projeto
 
-Este projeto é uma solução completa de **Business Intelligence** focada em combater a evasão escolar através de análise preditiva. O sistema utiliza Machine Learning para identificar alunos em risco de evasão e fornece insights acionáveis para tomada de decisão institucional.
+Este repositório contém o **frontend** do sistema - uma solução de **Business Intelligence** focada em visualização e análise de dados para combater a evasão escolar.
+
+O frontend utiliza o modelo de Machine Learning treinado (disponível no [repositório backend](https://github.com/ArthurBuenoSilva/tcc-course-evasion)) para:
+
+- Identificar alunos em risco de evasão
+- Fornecer insights visuais e acionáveis
+- Simular cenários de intervenção
+- Calcular impacto financeiro e ROI
+
+### 🔄 Arquitetura do Projeto
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  BACKEND (tcc-course-evasion)                               │
+│  - Coleta e limpeza de dados                                │
+│  - Feature engineering                                       │
+│  - Treinamento de modelos ML                                │
+│  - Data augmentation (CTGAN)                                │
+│  - Exporta: best_model.pkl                                  │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│  FRONTEND (este repositório)                                │
+│  - Carrega modelo treinado                                  │
+│  - Dashboard interativo Streamlit                           │
+│  - Visualizações SHAP                                       │
+│  - Análise de impacto financeiro                            │
+│  - Simulador de cenários                                    │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ### 🎯 Objetivos
 
