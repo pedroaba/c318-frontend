@@ -363,8 +363,8 @@ flowchart TD
     VALIDATE -->|Válido| PREDICT[🤖 Predição do Modelo]
     VALIDATE -->|Inválido| ERROR([❌ Erro])
 
-    PREDICT --> PROB[📊 Probabilidades<br/>P(Não Evadiu) | P(Evadiu)]
-    PROB --> THRESHOLD{🎚️ P(Evadiu) > 0.5?}
+    PREDICT --> PROB[📊 Probabilidades<br/>P de Não Evadiu e P de Evadiu]
+    PROB --> THRESHOLD{🎚️ P de Evadiu maior que 0.5?}
 
     THRESHOLD -->|Sim| RISK[⚠️ ALUNO EM RISCO]
     THRESHOLD -->|Não| SAFE[✅ ALUNO SEGURO]
