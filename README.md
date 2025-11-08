@@ -32,6 +32,53 @@ Este projeto é uma solução completa de **Business Intelligence** focada em co
 
 ---
 
+## 🏗️ Arquitetura do Sistema
+
+### Visão Geral
+
+```mermaid
+graph TB
+    subgraph "📊 Camada de Dados"
+        DB1[forms.csv]
+        DB2[clean_forms.csv]
+        DB3[encoded_forms.csv]
+        DB4[train_augmented.csv]
+    end
+
+    subgraph "🤖 Camada de ML"
+        MODEL[best_model.pkl]
+        SHAP[SHAP TreeExplainer]
+    end
+
+    subgraph "⚙️ Camada de Processamento"
+        LOADER[DatasetLoader]
+        PROCESSOR[FeatureProcessor]
+        NAMES[NamesProcessor]
+    end
+
+    subgraph "🎨 Camada de Apresentação"
+        DASH[Dashboard Streamlit]
+        VIZ1[Gráficos Plotly]
+        VIZ2[Gráficos SHAP]
+    end
+
+    DB3 --> LOADER
+    LOADER --> PROCESSOR
+    PROCESSOR --> MODEL
+    MODEL --> SHAP
+    SHAP --> NAMES
+    NAMES --> DASH
+    DASH --> VIZ1
+    DASH --> VIZ2
+
+    style DB3 fill:#4ecdc4,stroke:#2d9cdb,color:#fff
+    style MODEL fill:#f7b731,stroke:#f39c12,color:#fff
+    style PROCESSOR fill:#5f27cd,stroke:#341f97,color:#fff
+    style DASH fill:#ff6b6b,stroke:#c92a2a,color:#fff
+```
+
+---
+
 ## 🏗️ Estrutura do Projeto
 
 ```
@@ -153,6 +200,22 @@ O aplicativo será aberto automaticamente no navegador em `http://localhost:8501
 
 **📊 Visão Geral**
 
+```mermaid
+graph LR
+    A[📝 Total de Alunos] --> B[🎯 Modelo ML]
+    B --> C[⚠️ Alunos em Risco]
+    B --> D[✅ Alunos Seguros]
+    C --> E[💰 Receita em Risco]
+    C --> F[📊 Taxa de Retenção]
+
+    style A fill:#4ecdc4,stroke:#2d9cdb,color:#fff
+    style B fill:#ae3ec9,stroke:#862e9c,color:#fff
+    style C fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style D fill:#6bcf7f,stroke:#37b24d,color:#fff
+    style E fill:#ffd93d,stroke:#f08c00,color:#000
+    style F fill:#ffd93d,stroke:#f08c00,color:#000
+```
+
 - Total de alunos avaliados
 - Número de alunos em risco
 - Taxa estimada de retenção
@@ -214,6 +277,32 @@ Este script gera:
 
 O modelo utiliza **5 dimensões** de análise:
 
+```mermaid
+mindmap
+  root((🎓 16 Features<br/>de Análise))
+    💰 Socioeconômicas
+      Moradia
+      Trabalho
+      Bolsa
+    🌍 Geográficas
+      Cidade
+      Frequência Retorno
+      Natural SRS
+    📚 Acadêmicas
+      Dependências
+      Período
+      Tipo Escola
+    🎯 Comportamentais
+      Horas Estudo
+      Abandono Trabalho
+      Atividades Extra
+      Trancamento
+      Evasão Anterior
+    👥 Demográficas
+      Idade
+      Gênero
+```
+
 #### 1. **Socioeconômicas** (3 features)
 
 - Situação de Moradia
@@ -247,21 +336,58 @@ O modelo utiliza **5 dimensões** de análise:
 
 ### Pipeline de Dados
 
-```
-forms.csv (dados brutos)
-    ↓
-clean_forms.csv (limpeza)
-    ↓
-encoded_forms.csv (encoding e feature engineering)
-    ↓
-train_augmented.csv (data augmentation via CTGAN)
-    ↓
-best_model.pkl (modelo treinado)
+```mermaid
+graph LR
+    A[📄 forms.csv<br/>Dados Brutos] --> B[🧹 clean_forms.csv<br/>Limpeza de Dados]
+    B --> C[🔧 encoded_forms.csv<br/>Feature Engineering]
+    C --> D[🔬 train_augmented.csv<br/>Data Augmentation CTGAN]
+    D --> E[🤖 best_model.pkl<br/>Modelo Treinado]
+
+    style A fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style B fill:#ffd93d,stroke:#f08c00,color:#000
+    style C fill:#6bcf7f,stroke:#37b24d,color:#fff
+    style D fill:#4dabf7,stroke:#1971c2,color:#fff
+    style E fill:#ae3ec9,stroke:#862e9c,color:#fff
 ```
 
 ---
 
 ## 🧠 Modelo de Machine Learning
+
+### Fluxo de Predição
+
+```mermaid
+flowchart TD
+    START([🎯 Início]) --> INPUT[📥 Dados do Aluno<br/>16 features]
+    INPUT --> VALIDATE{✅ Validação<br/>de Features}
+    VALIDATE -->|Válido| PREDICT[🤖 Predição do Modelo]
+    VALIDATE -->|Inválido| ERROR([❌ Erro])
+
+    PREDICT --> PROB[📊 Probabilidades<br/>P(Não Evadiu) | P(Evadiu)]
+    PROB --> THRESHOLD{🎚️ P(Evadiu) > 0.5?}
+
+    THRESHOLD -->|Sim| RISK[⚠️ ALUNO EM RISCO]
+    THRESHOLD -->|Não| SAFE[✅ ALUNO SEGURO]
+
+    RISK --> SHAP1[📈 Análise SHAP<br/>Fatores de Risco]
+    SAFE --> SHAP2[📈 Análise SHAP<br/>Fatores Protetivos]
+
+    SHAP1 --> DASH[📊 Dashboard]
+    SHAP2 --> DASH
+    DASH --> END([🏁 Fim])
+
+    style START fill:#4ecdc4,stroke:#2d9cdb,color:#fff
+    style RISK fill:#ff6b6b,stroke:#c92a2a,color:#fff
+    style SAFE fill:#6bcf7f,stroke:#37b24d,color:#fff
+    style SHAP1 fill:#ffd93d,stroke:#f08c00,color:#000
+    style SHAP2 fill:#ffd93d,stroke:#f08c00,color:#000
+    style DASH fill:#ae3ec9,stroke:#862e9c,color:#fff
+    style END fill:#4ecdc4,stroke:#2d9cdb,color:#fff
+```
+
+---
+
+## 🧠 Características do Modelo
 
 ### Características
 
@@ -308,13 +434,30 @@ Processa features para o modelo:
 
 ### Fluxo de Execução
 
-```
-1. setup() → Suprime warnings do sklearn
-2. ModelLoader → Carrega best_model.pkl
-3. DatasetLoader → Carrega encoded_forms.csv
-4. FeatureProcessor → Valida e prepara features
-5. TreeExplainer → Calcula valores SHAP
-6. Streamlit → Renderiza dashboard
+```mermaid
+sequenceDiagram
+    participant U as 👤 Usuário
+    participant S as 🖥️ Streamlit
+    participant ML as 🔄 ModelLoader
+    participant DL as 📊 DatasetLoader
+    participant FP as ⚙️ FeatureProcessor
+    participant M as 🤖 Modelo ML
+    participant SH as 📈 SHAP Explainer
+
+    U->>S: Acessa Dashboard
+    S->>ML: Carrega best_model.pkl
+    ML-->>S: Modelo carregado
+    S->>DL: Carrega encoded_forms.csv
+    DL-->>S: DataFrame preparado
+    S->>FP: Processa features
+    FP->>FP: Valida features
+    FP->>FP: Separa X e y
+    FP-->>S: Features prontas
+    S->>M: model.predict_proba(X)
+    M-->>S: Probabilidades de evasão
+    S->>SH: Calcula valores SHAP
+    SH-->>S: Explicabilidade do modelo
+    S-->>U: Renderiza dashboard interativo
 ```
 
 ---
