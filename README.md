@@ -2,7 +2,6 @@
 <h3 align="center">📊 Frontend - Dashboard & Análise</h3>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Tipo-Frontend-blueviolet?style=for-the-badge" alt="Frontend" />
   <img src="https://img.shields.io/badge/Python-3.13+-blue.svg" alt="Python" />
   <img src="https://img.shields.io/badge/Streamlit-1.51.0-red.svg" alt="Streamlit" />
   <img src="https://img.shields.io/badge/Scikit--learn-1.7.2-orange.svg" alt="Scikit-learn" />
